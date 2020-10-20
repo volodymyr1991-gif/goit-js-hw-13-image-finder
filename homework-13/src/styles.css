@@ -18,3 +18,9 @@ body {
    */
   background-image: url('./images/bg-pattern.png');
 }
+.gallery{
+  margin: 20px;
+}
+.button.is-hidden{
+  display: none;
+}

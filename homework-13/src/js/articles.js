@@ -5,8 +5,9 @@ import refs from '../refs'
 // };
 function updateArticlesMarcup(articles) {
   const marcup = articlesTpl(articles);
-  console.log(marcup);
+  // console.log(marcup);
   refs.galleryContainer.insertAdjacentHTML('beforeend', marcup);
+  // refs.galleryContainer.innerHTML = marcup;
 }
 
 export default updateArticlesMarcup;
