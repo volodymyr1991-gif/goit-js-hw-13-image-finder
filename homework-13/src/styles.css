@@ -24,3 +24,6 @@ body {
 .button.is-hidden{
   display: none;
 }
+.search-form{
+  text-align: center;
+}
