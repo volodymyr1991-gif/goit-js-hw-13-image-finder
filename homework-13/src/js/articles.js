@@ -1,13 +1,10 @@
 import articlesTpl from '../templates/articles.hbs';
-import refs from '../refs'
-// const refs = {
-//   articles: document.querySelector('.js-articles'),
-// };
+import refs from '../refs';
+
 function updateArticlesMarcup(articles) {
   const marcup = articlesTpl(articles);
-  // console.log(marcup);
+
   refs.galleryContainer.insertAdjacentHTML('beforeend', marcup);
-  // refs.galleryContainer.innerHTML = marcup;
 }
 
 export default updateArticlesMarcup;

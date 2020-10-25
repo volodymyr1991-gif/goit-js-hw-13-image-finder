@@ -1,73 +1,52 @@
 import './styles.css';
-// import fechArticles from './js/fecch-articles'
-import updateArticlesMarcup from './js/articles'
-import newsServices from './js/news-services'
+
+import updateArticlesMarcup from './js/articles';
+import newsServices from './js/news-services';
+import showModal from './js/show-modal.js';
 import PNotify from 'pnotify/dist/es/PNotify.js';
 import 'pnotify/dist/PNotifyBrightTheme.css';
-// import  './templates/articles.hbs'
-import './js/articles'
-import refs from './refs'
 
-refs.searchForm.addEventListener('input', (event)=>{
+import './js/articles';
+import refs from './refs';
 
-const form = event.currentTarget;
-newsServices.query = form.elements.query.value
+refs.searchForm.addEventListener('submit', event => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  newsServices.query = form.elements.query.value;
+  refs.galleryContainer.innerHTML = '';
 
-refs.galleryContainer.innerHTML = '';
-// form.reset();
+  newsServices.resetPage();
 
-newsServices.resetPage();
-refs.galleryContainer.innerHTML = '';
-newsServices.fechArticles().then(data=>{
-    
-    if(data){
-        // refs.galleryContainer.innerHTML=''
-        setTimeout(() => {
-            // console.log(data),
-            PNotify.error({
-              text: 'ваш запит пройшов успішно',
-              delay: 2000,
-            });
-          }, 600);
-          updateArticlesMarcup(data)
-          refs.loadMoreBtn.classList.remove('is-hidden')
-          console.log( document.documentElement.offsetHeight);
+  refs.loadMoreBtn.classList.add('is-hidden');
+  newsServices.fechArticles().then(data => {
+    if (data.length < 1) {
+      PNotify.info();
+      ({
+        text: 'Потрібно ввести більше інформації для пошуку',
+      });
     }
-    // else if(newsServices.query.length >= 3){
-    //     updateArticlesMarcup(data);
-    //     // refs.loadMoreBtn.classList.remove('is-hidden')
-    //     console.log(data);
-    // }
-       
-    
-    console.log(newsServices.query.length);
-    
-    // refs.galleryContainer.innerHTML=''
-    // updateArticlesMarcup(data);
-    // refs.galleryContainer.innerHTML=''
-    // console.log(document.documentElement.offsetHeight);
-    
-  
-    // refs.loadMoreBtn.classList.remove('is-hidden')
-});
+    updateArticlesMarcup(data);
+    // refs.loadMoreBtn.classList.remove('is-hidden');
+
+    // refs.loadMoreBtn.classList.remove('is-hidden');
+  });
+  form.reset();
 });
 
-refs.loadMoreBtn.addEventListener('click', ()=>{
-    newsServices.fechArticles().then(data=>{
-        // console.log(data.value);
-        updateArticlesMarcup(data)
-        
+refs.gallery.addEventListener('click', showModal);
+
+// refs.loadMoreBtn.addEventListener('click', () => {
+//   newsServices.fechArticles().then(data => {
+//     updateArticlesMarcup(data);
+//   });
+// });
+
+window.addEventListener('scroll', function () {
+  const y = window.pageYOffset + window.innerHeight;
+
+  if (y >= document.documentElement.offsetHeight - 100) {
+    newsServices.fechArticles().then(data => {
+      updateArticlesMarcup(data);
     });
-    
- console.log( document.documentElement.offsetHeight);
-
-    window.scrollTo({
-       top: 1350,
-            behavior: 'smooth'
-        })
-})
-
-
-
-// console.log(axios);
-
+  }
+});
